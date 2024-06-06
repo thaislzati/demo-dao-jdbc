@@ -7,8 +7,8 @@ import model.entities.Seller;
 public class Main {
     public static void main(String[] args) {
 
-
         SellerDao sellerDao = DaoFactory.createSellerDao(); //dessa forma o programa não conhece a implementação, somente a interface
+        System.out.println("Seller findById");
         Seller seller = sellerDao.findById(3);
         System.out.println(seller);
     }
