@@ -36,20 +36,20 @@ public class SellerDaoJDBC implements SellerDao {
             preparedStatement.setInt(5, seller.getDepartment().getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0){
+            if (rowsAffected > 0) {
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                 int i = 1;
-                if (generatedKeys.next()){
+                if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
                     seller.setId(id);
                 }
                 DB.closeResultSet(generatedKeys);
-            }else {
+            } else {
                 throw new DbException("Unexpected error! No rows affected");
             }
-        }catch (SQLException e){
-            throw  new DbException(e.getMessage());
-        }finally {
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
             DB.closeStatement(preparedStatement);
         }
 
@@ -73,16 +73,28 @@ public class SellerDaoJDBC implements SellerDao {
 
             preparedStatement.executeUpdate();
 
-        }catch (SQLException e){
-            throw  new DbException(e.getMessage());
-        }finally {
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
             DB.closeStatement(preparedStatement);
         }
     }
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM seller WHERE Id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
 
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     public List<Seller> findByDepartment(Department department) {
@@ -102,9 +114,9 @@ public class SellerDaoJDBC implements SellerDao {
             Map<Integer, Department> map = new HashMap<>();
             while (resultSet.next()) {
                 Department dep = map.get(resultSet.getInt("DepartmentId"));
-                if (dep==null){
+                if (dep == null) {
                     dep = instantiateDepartment(resultSet);
-                    map.put(resultSet.getInt("DepartmentId"),dep);
+                    map.put(resultSet.getInt("DepartmentId"), dep);
                 }
                 Seller seller = instantiateSeller(resultSet, dep);
                 sellers.add(seller);
@@ -164,17 +176,17 @@ public class SellerDaoJDBC implements SellerDao {
             Map<Integer, Department> map = new HashMap<>();
             while (resultSet.next()) {
                 Department dep = map.get(resultSet.getInt("DepartmentId"));
-                if (dep==null){
+                if (dep == null) {
                     dep = instantiateDepartment(resultSet);
-                    map.put(resultSet.getInt("DepartmentId"),dep);
+                    map.put(resultSet.getInt("DepartmentId"), dep);
                 }
                 Seller seller = instantiateSeller(resultSet, dep);
                 sellers.add(seller);
             }
             return sellers;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }finally {
+        } finally {
             DB.closeStatement(preparedStatement);
             DB.closeResultSet(resultSet);
         }

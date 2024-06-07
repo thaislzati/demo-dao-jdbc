@@ -21,15 +21,19 @@ public class Main {
 //        System.out.println("Seller findByDepartmaloent");
 
 
-        System.out.println("Insert");
-        Seller seller = new Seller(null,"Joana", "Joana@gmail.com", new Date(), 1500., department);
-        sellerDao.insert(seller);
-        System.out.println("Inserted!  New id = " + seller.getId());
+//        System.out.println("Insert");
+//        Seller seller = new Seller(null,"Joana", "Joana@gmail.com", new Date(), 1500., department);
+//        sellerDao.insert(seller);
+//        System.out.println("Inserted!  New id = " + seller.getId());
+//
+//        System.out.println("Update");
+//        seller = sellerDao.findById(5);
+//        seller.setName("Martha Waine");
+//        sellerDao.update(seller);
+//        System.out.println(seller);
 
-        System.out.println("Update");
-        seller = sellerDao.findById(5);
-        seller.setName("Martha Waine");
-        sellerDao.update(seller);
-        System.out.println(seller);
+        System.out.println("Seller delete");
+        sellerDao.deleteById(19);
+
     }
 }
