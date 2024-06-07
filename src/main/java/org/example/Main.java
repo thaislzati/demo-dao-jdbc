@@ -7,6 +7,7 @@ import model.entities.Seller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.WeakHashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,5 +25,11 @@ public class Main {
         Seller seller = new Seller(null,"Joana", "Joana@gmail.com", new Date(), 1500., department);
         sellerDao.insert(seller);
         System.out.println("Inserted!  New id = " + seller.getId());
+
+        System.out.println("Update");
+        seller = sellerDao.findById(5);
+        seller.setName("Martha Waine");
+        sellerDao.update(seller);
+        System.out.println(seller);
     }
 }
